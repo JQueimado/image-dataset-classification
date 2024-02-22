@@ -16,7 +16,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {/* Nav Bar */}
+        <div className="navbar bg-base-300">
+          <a className="btn btn-ghost text-xl">Image Classifier</a>
+        </div>
+        {/* Page */}
+        {children}
+      </body>
     </html>
   );
 }
