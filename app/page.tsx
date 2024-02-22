@@ -30,6 +30,7 @@ export default function Home() {
             type="file"
             className="file-input file-input-bordered w-full max-w-xs"
             onChange={(e) => setFiles(e.target.files?.[0])}
+            multiple
           />
           <input className="btn" type="submit" value="Upload" />
         </form>
