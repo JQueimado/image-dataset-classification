@@ -31,26 +31,31 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className + " h-screen"}>
         {/* Nav Bar */}
         <div className="navbar bg-base-300">
           <a className="btn btn-ghost text-xl">Image Classifier</a>
         </div>
         {/* Page */}
-        <div className="flex w-full">
-          <div className="absoulute top-0 left-0 right-0 w-1/6 min-h-screen bg-base-300">
+        <div className="flex fixed top-0 left-0 right-0 h-full mt-16">
+          <div className="absoulute top-0 left-0 right-0 w-1/6 h-full bg-base-300">
             <h1 className="text-center">Images</h1>
             <UploadForm />
-            <div className="grid grid-cols-1 gap-4 w-full place-content-center overflow-x">
-              {images?.names.map((dir, i) => (
-                <a className="flex items-center max-w-full">
-                  <img
-                    className="outline outline-neutral-content rounded-md w-[95%] m-auto hover:opacity-70"
-                    src={`/imgs/${dir}`}
-                    alt={`image nº${i}`}
-                  />
-                </a>
-              ))}
+            <div className="overflow-auto">
+              <div className="grid grid-cols-1 gap-4 place-content-center h-[800px]">
+                {images?.names.map((dir, i) => (
+                  <a
+                    className="flex items-center w-full h-full"
+                    href={`/image/${dir}`}
+                  >
+                    <img
+                      className="outline outline-neutral-content rounded-md w-[95%] h-full m-auto hover:opacity-70"
+                      src={`/imgs/${dir}`}
+                      alt={`image nº${i}`}
+                    />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
           <div className="w-5/6">{children}</div>
