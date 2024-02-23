@@ -1,40 +1,34 @@
-"use client";
-import Image from "next/image";
-import React, { useState } from "react";
+import UploadForm from "./UploadForm";
+
+// export const getServerSideProps = (async () => {
+//   const images: Images = { names: [] };
+//   try {
+//     images.names = fs.readdirSync(
+//       path.join(process.cwd(), "/public/imgs")
+//     ) as string[];
+//     console.log(images.names);
+//     return { props: { images } };
+//   } catch (e) {
+//     return { props: { images } };
+//   }
+// }) satisfies GetServerSideProps<{ images: Images }>;
 
 export default function Home() {
-  /* State */
-  const [files, setFiles] = useState<File>();
-  /* On Submit */
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!files) return;
-    try {
-      const data = new FormData();
-      data.set("files", files);
-      fetch("/api/upload", {
-        method: "POST",
-        body: data,
-      }).then(async (response) => {
-        console.log("ok");
-      });
-    } catch (e) {}
-  };
-
   return (
     <main className="relative w-full">
       <div className="absoulute top-0 left-0 right-0 w-1/6 min-h-screen bg-base-300">
         <h1 className="text-center">Images</h1>
-        <form onSubmit={onSubmit}>
-          <input
-            type="file"
-            className="file-input file-input-bordered w-full max-w-xs"
-            onChange={(e) => setFiles(e.target.files?.[0])}
-            multiple
-          />
-          <input className="btn" type="submit" value="Upload" />
-        </form>
-        <div className="overflow-x"></div>
+        <UploadForm />
+        <div className="overflow-x">
+          {/* {images?.names.map((dir) => (
+            <Image
+              src={`/imgs/${dir}`}
+              width={500}
+              height={500}
+              alt={"image"}
+            />
+          ))} */}
+        </div>
       </div>
     </main>
   );
