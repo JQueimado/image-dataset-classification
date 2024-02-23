@@ -29,9 +29,9 @@ export default function UploadForm() {
         multiple
       />
       <SubmitButton />
-      <p aria-live="polite" role="status">
+      {/* <p aria-live="polite" role="status">
         {state?.msg}
-      </p>
+      </p> */}
     </form>
   );
 }
