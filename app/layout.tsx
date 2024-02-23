@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import UploadForm from "./UploadForm";
+import fs from "fs";
+import path from "path";
+import Image from "next/image";
 
 const inter = Inter({ subsets: ["latin"] });
+
+interface Images {
+  names: string[];
+}
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,6 +22,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const images: Images = { names: [] };
+  try {
+    images.names = fs.readdirSync(
+      path.join(process.cwd(), "/public/imgs")
+    ) as string[];
+  } catch (e) {}
+
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -22,7 +37,24 @@ export default function RootLayout({
           <a className="btn btn-ghost text-xl">Image Classifier</a>
         </div>
         {/* Page */}
-        {children}
+        <div className="flex w-full">
+          <div className="absoulute top-0 left-0 right-0 w-1/6 min-h-screen bg-base-300">
+            <h1 className="text-center">Images</h1>
+            <UploadForm />
+            <div className="grid grid-cols-1 gap-4 w-full place-content-center overflow-x">
+              {images?.names.map((dir, i) => (
+                <a className="flex items-center max-w-full">
+                  <img
+                    className="outline outline-neutral-content rounded-md w-[95%] m-auto hover:opacity-70"
+                    src={`/imgs/${dir}`}
+                    alt={`image nº${i}`}
+                  />
+                </a>
+              ))}
+            </div>
+          </div>
+          <div className="w-5/6">{children}</div>
+        </div>
       </body>
     </html>
   );
