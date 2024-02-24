@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 
 export default function Image({ params }: { params: { image: string } }) {
   const image = `/imgs/${params.image}`;
@@ -13,8 +12,8 @@ export default function Image({ params }: { params: { image: string } }) {
   };
 
   return (
-    <main className="grid place-content-center h-full border-2 border-succsses">
-      <div className="border-2 border-error">
+    <main className="grid place-content-center h-full">
+      <div className="rounded-lg bg-base-300 p-4 border-4 border-primary">
         <img
           onMouseMove={onMouseMove}
           className="m-auto"

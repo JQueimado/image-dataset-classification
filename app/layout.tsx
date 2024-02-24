@@ -52,7 +52,7 @@ export default function RootLayout({
                       href={`/image/${dir}`}
                     >
                       <img
-                        className="outline outline-neutral-content rounded-md w-[90%] m-auto hover:opacity-70"
+                        className="outline outline-primary rounded-md w-[90%] m-auto hover:opacity-70"
                         src={`/imgs/${dir}`}
                         alt={`image nº${i}`}
                       />
