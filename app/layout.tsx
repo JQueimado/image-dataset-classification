@@ -31,34 +31,38 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className + " h-screen"}>
+      <body className={inter.className + " flex flex-col h-screen"}>
         {/* Nav Bar */}
-        <div className="navbar bg-base-300">
+        <div className="flex-initial navbar bg-base-300">
           <a className="btn btn-ghost text-xl">Image Classifier</a>
         </div>
         {/* Page */}
-        <div className="flex fixed top-0 left-0 right-0 h-full mt-16">
-          <div className="absoulute top-0 left-0 right-0 w-1/6 h-full bg-base-300">
-            <h1 className="text-center">Images</h1>
-            <UploadForm />
-            <div className="overflow-auto">
-              <div className="grid grid-cols-1 gap-4 place-content-center h-[800px]">
-                {images?.names.map((dir, i) => (
-                  <a
-                    className="flex items-center w-full h-full"
-                    href={`/image/${dir}`}
-                  >
-                    <img
-                      className="outline outline-neutral-content rounded-md w-[95%] h-full m-auto hover:opacity-70"
-                      src={`/imgs/${dir}`}
-                      alt={`image nº${i}`}
-                    />
-                  </a>
-                ))}
+        <div className="flex-auto flex ">
+          <div className="flex-initial flex flex-col w-1/6 bg-base-300 ">
+            <div className="flex-initial ">
+              <h1 className="text-center">Images</h1>
+              <UploadForm />
+            </div>
+            <div className="flex-auto overflow-auto">
+              <div className="h-0">
+                <div className="grid grid-cols-1 gap-4 py-4 place-content-center">
+                  {images?.names.map((dir, i) => (
+                    <a
+                      className="flex flex-col items-center w-full"
+                      href={`/image/${dir}`}
+                    >
+                      <img
+                        className="outline outline-neutral-content rounded-md w-[90%] m-auto hover:opacity-70"
+                        src={`/imgs/${dir}`}
+                        alt={`image nº${i}`}
+                      />
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-          <div className="w-5/6">{children}</div>
+          <div className="flex-auto w-full">{children}</div>
         </div>
       </body>
     </html>
