@@ -1,18 +1,6 @@
 "use client";
 
-import { LegacyRef, useRef, useState } from "react";
-
-interface mousePosition {
-  x: string;
-  y: string;
-}
-
-interface Rectangle {
-  x1: string;
-  y1: string;
-  x2: string;
-  y2: string;
-}
+import { createRef, useState } from "react";
 
 export default function Image({ params }: { params: { image: string } }) {
   const image = `/imgs/${params.image}`;
@@ -22,7 +10,7 @@ export default function Image({ params }: { params: { image: string } }) {
   const [draw, setDraw] = useState<boolean>(false);
   const [visible, setVisible] = useState<boolean>(false);
 
-  const imageDom = useRef(null);
+  const imageDom = createRef<HTMLImageElement>();
 
   const onMouseMove = (e: React.MouseEvent) => {
     if (!imageDom.current) return;
