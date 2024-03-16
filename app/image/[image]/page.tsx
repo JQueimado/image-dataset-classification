@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { LegacyRef, useRef, useState } from "react";
 
 interface mousePosition {
   x: string;
@@ -16,24 +16,47 @@ interface Rectangle {
 
 export default function Image({ params }: { params: { image: string } }) {
   const image = `/imgs/${params.image}`;
-  const [mousePosition, setMousePosition] = useState<mousePosition>({
-    x: "0",
-    y: "0",
-  });
+  const [mousePosition, setMousePosition] = useState<Array<number>>([
+    0, 0, 0, 0,
+  ]);
+  const [draw, setDraw] = useState<boolean>(false);
+  const [visible, setVisible] = useState<boolean>(false);
+
+  const imageDom = useRef(null);
 
   const onMouseMove = (e: React.MouseEvent) => {
-    let x = e.clientX;
-    let y = e.clientY;
+    if (!imageDom.current) return;
+    if (!draw && !visible) {
+      var rect = imageDom.current.getBoundingClientRect();
+      let x0 = e.clientX - rect.left;
+      let y0 = e.clientY - rect.top;
+      setMousePosition([x0, y0, 0, 0]);
+      setDraw(true);
+      setVisible(true);
+    } else if (draw && visible) {
+      setDraw(false);
+    } else {
+      setVisible(false);
+      setDraw(false);
+      setMousePosition([0, 0, 0, 0]);
+    }
+  };
 
-    console.log(x, y);
-    setMousePosition({ x: x.toString(), y: y.toString() });
+  const onDraw = (e: React.MouseEvent) => {
+    if (!draw || !imageDom.current) return;
+    var rect = imageDom.current.getBoundingClientRect();
+    let x1 = e.clientX - rect.left;
+    let y1 = e.clientY - rect.top;
+    setMousePosition([mousePosition[0], mousePosition[1], x1, y1]);
   };
 
   return (
     <main className="grid place-content-center h-full">
-      <div className="relative rounded-lg bg-base-300 p-4 border-4 border-primary">
+      <div className="relative rounded-lg bg-base-300 border-4 border-primary">
         <img
-          onMouseMove={onMouseMove}
+          ref={imageDom}
+          onMouseDown={onMouseMove}
+          onMouseMove={onDraw}
           className="m-auto"
           src={image}
           width={500}
@@ -41,11 +64,14 @@ export default function Image({ params }: { params: { image: string } }) {
           alt={params.image}
         />
         <div
-          className={`min-w-[300px] min-h-[130px] border-2 border-error`}
+          className={`border-2 border-error pointer-events-none`}
           style={{
             position: "absolute",
-            top: mousePosition.x,
-            left: mousePosition.y,
+            top: mousePosition[1],
+            left: mousePosition[0],
+            minHeight: mousePosition[3] - mousePosition[1],
+            minWidth: mousePosition[2] - mousePosition[0],
+            visibility: visible ? "visible" : "hidden",
           }}
         ></div>
       </div>
