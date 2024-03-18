@@ -42,7 +42,9 @@ export default function Image({ params }: { params: { image: string } }) {
     let y1 = e.clientY - rect.top;
 
     let width = x1 - x0;
+    if (width < 0) width *= -1;
     let hight = y1 - y0;
+    if (hight < 0) hight *= -1;
 
     let cx = x0 + width / 2;
     let cy = y0 + hight / 2;
@@ -58,6 +60,11 @@ export default function Image({ params }: { params: { image: string } }) {
           <h2 className="pl-4">Y:{mousePosition[7]}</h2>
           <h2 className="pl-4"> Width:{mousePosition[4]}</h2>
           <h2 className="pl-4"> Hight:{mousePosition[5]}</h2>
+
+          <h2 className="pl-4">X0:{mousePosition[0]}</h2>
+          <h2 className="pl-4">Y0:{mousePosition[1]}</h2>
+          <h2 className="pl-4">X1:{mousePosition[2]}</h2>
+          <h2 className="pl-4">Y1:{mousePosition[3]}</h2>
         </div>
       )}
       <div className="relative rounded-lg bg-base-300 border-4 border-primary">
@@ -67,8 +74,6 @@ export default function Image({ params }: { params: { image: string } }) {
           onMouseMove={onDraw}
           className="m-auto"
           src={image}
-          width={500}
-          height={500}
           alt={params.image}
         />
         <div
@@ -77,8 +82,8 @@ export default function Image({ params }: { params: { image: string } }) {
             position: "absolute",
             top: mousePosition[1],
             left: mousePosition[0],
-            minHeight: mousePosition[3] - mousePosition[1],
-            minWidth: mousePosition[2] - mousePosition[0],
+            minHeight: mousePosition[5],
+            minWidth: mousePosition[4],
             visibility: visible ? "visible" : "hidden",
           }}
         ></div>
