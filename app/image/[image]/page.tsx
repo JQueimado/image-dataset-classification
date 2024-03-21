@@ -4,10 +4,15 @@ import { createRef, useEffect, useState } from "react";
 
 export default function ImagePage({ params }: { params: { image: string } }) {
   const image = `/imgs/${params.image}`;
+  const imageComp = new Image();
+  imageComp.src = image;
+  const width = 600;
+  const hight = 800;
   /* 0:x0, 1:y0, 2:x1, 3:y1, 4:w, 5:h, 6:cx, 7:cy */
   const [mousePosition, setMousePosition] = useState<Array<number>>([
     0, 0, 0, 0, 0, 0, 0, 0,
   ]);
+  const [areas, setAreas] = useState<Array<Array<Number>>>([[]]);
   const [draw, setDraw] = useState<boolean>(false);
 
   const canvasDom = createRef<HTMLCanvasElement>();
@@ -57,6 +62,7 @@ export default function ImagePage({ params }: { params: { image: string } }) {
     let DrawContext = canvasComp.getContext("2d");
     if (!DrawContext) return;
     DrawContext.clearRect(0, 0, canvasComp.width, canvasComp.height);
+    DrawContext.drawImage(imageComp, 0, 0, width, hight);
     DrawContext.strokeStyle = "#f00";
     DrawContext.strokeRect(
       mousePosition[0],
@@ -68,15 +74,11 @@ export default function ImagePage({ params }: { params: { image: string } }) {
 
   useEffect(() => {
     /*Set Canvas Size*/
-    let imageComp = new Image();
     let canvasComp = canvasDom.current;
     if (!canvasComp) return;
-    imageComp.src = image;
-    if (!imageComp) return;
-    let width = imageComp.naturalWidth;
-    let hight = imageComp.naturalHeight;
     canvasComp.width = width;
     canvasComp.height = hight;
+    canvasComp.getContext("2d")?.drawImage(imageComp, 0, 0, width, hight);
   }, []);
 
   return (
@@ -99,7 +101,6 @@ export default function ImagePage({ params }: { params: { image: string } }) {
           ref={canvasDom}
           onMouseMove={onMouseMove}
           onMouseDown={onMouseClick}
-          style={{ background: `url(${image})` }}
         ></canvas>
       </div>
     </main>
