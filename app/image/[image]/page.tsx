@@ -10,7 +10,7 @@ export default function ImagePage({ params }: { params: { image: string } }) {
 
   /* Memo */
   const imageComp = useMemo<HTMLImageElement>(() => {
-    const img = new Image();
+    const img = document.createElement("img");
     img.src = image;
     return img;
   }, [image]);
@@ -81,9 +81,13 @@ export default function ImagePage({ params }: { params: { image: string } }) {
     if (!canvasComp) return;
     let DrawContext = canvasComp.getContext("2d");
     if (!DrawContext) return;
+
+    //Clear
     DrawContext.clearRect(0, 0, canvasComp.width, canvasComp.height);
+
     //Draw image
     DrawContext.drawImage(imageComp, 0, 0, width, hight);
+
     //Draw Squares
     DrawContext.lineWidth = 2;
     DrawContext.strokeStyle = "#00f";
@@ -92,6 +96,7 @@ export default function ImagePage({ params }: { params: { image: string } }) {
       DrawContext.strokeRect(area[0], area[1], area[4], area[5]);
     });
     DrawContext.setLineDash([]);
+
     //Draw current
     DrawContext.strokeStyle = "#f00";
     DrawContext.strokeRect(
@@ -108,7 +113,9 @@ export default function ImagePage({ params }: { params: { image: string } }) {
     if (!canvasComp) return;
     canvasComp.width = width;
     canvasComp.height = hight;
-    canvasComp.getContext("2d")?.drawImage(imageComp, 0, 0, width, hight);
+    imageComp.onload = () => {
+      canvasComp.getContext("2d")?.drawImage(imageComp, 0, 0, width, hight);
+    };
   }, []);
 
   return (
